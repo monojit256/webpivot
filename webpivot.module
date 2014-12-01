@@ -1,0 +1,72 @@
+<?php
+
+/**
+ * Implements hook_menu().
+ */
+function webpivot_menu() { 
+	$item['admin/config/webpivot'] = array(
+	'title' => 'Web Pivot',
+	'description' => 'Select Multiple Views for Data analysis',
+	'position' => 'right',
+	'weight' => -5,
+	'page callback' => 'system_admin_menu_block_page',
+	'access arguments' => array('administer site configuration'),
+	'file' => 'system.admin.inc',
+	'file path' => drupal_get_path('module', 'system'),
+	);
+	$item['admin/config/webpivot/settings'] = array(
+	'title' => 'Web Pivot Settings',
+	'description' => 'Select Views for Using Pivot Table Functionlity',
+	'page callback' => 'drupal_get_form',
+	'page arguments' => array('web_pivot_admin_settings'),
+	'access arguments' => array('administer site configuration'),
+	'type' => MENU_NORMAL_ITEM,
+	'file' => 'webpivot.admin.inc',
+	);
+	$item['webpivot/show_pivot'] = array(
+	'page callback' => 'pivothandler',
+	'page arguments' => array('pivot_table'),
+	'access callback' => TRUE,
+	'type' => MENU_CALLBACK
+	 );
+	return $item;
+}
+
+/**
+ * Implements hook_page_alter().
+ */
+function webpivot_page_alter(&$page) {
+  $url = current_path();
+  //drupal_set_message($url); 
+  //dpm($page);
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function webpivot_form_alter(&$form, &$form_state, $form_id) { 
+  $url = current_path();
+  $views_name_unserialize = variable_get('webpivot_serialzed');
+  //dpm($views_name_unserialize);
+  foreach ($views_name_unserialize as $key => $value) {
+  	$check = variable_get('webpivot_'.$value['machine_name']);
+	$conver_url = str_replace("_","-",$value['machine_name']); 
+	if($url == $conver_url) {
+		if($check == 1) {
+	  		dpm($conver_url);
+			drupal_set_message(drupal_get_path('module','webpivot'));
+			drupal_add_js(drupal_get_path('module','webpivot').'/webpivot.js');
+			//drupal_add_js('ajax.googleapis.com/ajax/libs/jquerymobile/1.4.3/jquery.mobile.min.js');
+			$form['#suffix'] = "<input type='button' value='test' onclick='get_value_from_table()' />";
+		}
+	 }
+		//dpm($value['machine_name']);
+  }
+}
+
+/**
+ * Page Call back Function for webpivot/show_pivot page
+ */
+function pivothandler() {
+	
+}
