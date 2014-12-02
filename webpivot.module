@@ -62,6 +62,7 @@ function webpivot_form_alter(&$form, &$form_state, $form_id) {
 	 }
 		//dpm($value['machine_name']);
   }
+  $_SESSION['site_path'] = drupal_get_path('module','webpivot');
 }
 
 /**
@@ -70,52 +71,36 @@ function webpivot_form_alter(&$form, &$form_state, $form_id) {
 function pivothandler() {
 	$head = $_GET['head'];
 	$body = $_GET['body'];
+	$decode_head = json_decode($head);
+	$decode_body = json_decode($body);
 	//echo $body;
-	drupal_add_js(drupal_get_path('module','webpivot').'/brightsea/wpt/wpt.js');
-	drupal_add_js(drupal_get_path('module','webpivot').'/highcharts/4.0.1/highcharts-all.js');
-	drupal_add_js(drupal_get_path('module','webpivot').'/highcharts/group_categories/grouped-categories.js');
-	$decode_head = drupal_json_decode($head);
-	$decode_body = drupal_json_decode($body);
-	?>
-	<script>
-    $(document).ready(function() {
-        var arr = Array();
-        arr[0] = "Object";
-        arr[1] = "Color";
-        var arr1 =Array();
-       /* arr1[0] = Array();
-        arr1[0][0] = "A";
-        arr1[0][1] = "Red";
-        arr1[1] = Array();
-        arr1[1][0] = "B";
-        arr1[1][1] = "BLUE";*/
-        var i = 0;
-    /*$('#tab1 tr').each(function() {
-      arr1[i] = new Array();
-      arr1[i][0] = $(this).find('td:eq(0)').text();
-      arr1[i][1] = $(this).find('td:eq(1)').text();
-      i++;
-      //alert('asdas');
+	echo "<input type='hidden' id='hidden_head' value='$head' /><input type='hidden' id='hidden_body' value='$body' />";
+//	echo "<body class='claro'>";
+//	echo "<div id='wpt-container'></div>";
+//	echo "</body>";	
+//	drupal_add_css(drupal_get_path('module','webpivot').'/brightsea/wpt/wpt.css');
+//	drupal_add_js(drupal_get_path('module','webpivot').'/brightsea/wpt/wpt.js');
+//	drupal_add_js(drupal_get_path('module','webpivot').'/highcharts/4.0.1/highcharts-all.js');
+//	drupal_add_js(drupal_get_path('module','webpivot').'/highcharts/group_categories/grouped-categories.js');
+	//drupal_add_js(drupal_get_path('module','webpivot').'/pivottable.js');
+	//drupal_set_message(drupal_get_path('module','webpivot'));
+	//drupal_set_message('Hello');
+//	$path = "http://localhost/dis2/sites/all/modules/custom/webpivot/brightsea/dojo/";
+	/*echo '    <link rel="stylesheet" href="http://localhost/dis2/sites/all/modules/custom/webpivot/brightsea/wpt/wpt.css">
 
-
-    });*/
-          require(["wpt/WebPivotTable"], function(WebPivotTable){
-           //new WebPivotTable({},"wpt-container").setCsvUrl("ot.csv");
-           new WebPivotTable({},"wpt-container").setCsvData(<?php echo $decode_head; ?>,<?php echo $decode_body; ?>);
-            //webPivotTable.setCsvUrl('ot.csv');
-           //alert("asdsa");
-          //var items = document.getElementsByClassName('.wpt-field-checkbox');
-
-
-       });
-
-          //alert(items[0]);
-
-//alert('saas');
-});
-
-	</script>
-
-	<?php
-	//dpm($body);
+    <script type="text/javascript" src="http://localhost/dis2/sites/all/modules/custom/webpivot/brightsea/wpt/wpt.js" data-dojo-config="async:1, baseUrl:" ></script>
+    <script type="text/javascript" src="http://localhost/dis2/sites/all/modules/custom/webpivot/jquery/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="http://localhost/dis2/sites/all/modules/custom/webpivot/highcharts/4.0.1/highcharts-all.js"></script>
+    <script type="text/javascript" src="http://localhost/dis2/sites/all/modules/custom/webpivot/highcharts/group_categories/grouped-categories.js"></script>
+    <script type="text/javascript" src="http://localhost/dis2/sites/all/modules/custom/webpivot/pivottable.js"></script>
+	';*/
+	require 'http://localhost/dis2/sites/all/modules/custom/webpivot/test.php';
+/*	<link rel="stylesheet" href="http://localhost/dis2/sites/all/modules/custom/webpivot/brightsea/wpt/wpt.css">
+    <script type="text/javascript" src="http://localhost/dis2/sites/all/modules/custom/webpivot/brightsea/wpt/wpt.js" data-dojo-config="async:1, baseUrl: 'http://localhost/dis2/sites/all/modules/custom/webpivot/brightsea/dojo/'" ></script>
+    <script type="text/javascript" src="http://localhost/dis2/sites/all/modules/custom/webpivot/jquery/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="http://localhost/dis2/sites/all/modules/custom/webpivot/highcharts/4.0.1/highcharts-all.js"></script>
+    <script type="text/javascript" src="http://localhost/dis2/sites/all/modules/custom/webpivot/highcharts/group_categories/grouped-categories.js"></script>
+    <script type="text/javascript" src="http://localhost/dis2/sites/all/modules/custom/webpivot/pivottable.js"></script>*/
+	
+	//echo $_SESSION['site_path'];
 }
