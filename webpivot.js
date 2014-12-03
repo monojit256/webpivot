@@ -31,7 +31,28 @@ function get_value_from_table(th) {
 	}*/
 	var json_head = JSON.stringify(thead);
 	var json_body = JSON.stringify(tbody);
-	window.location = Drupal.settings.basePath+'webpivot/show_pivot?head='+json_head+'&body='+json_body;
+	var my_form;
+	my_form=document.createElement('FORM');
+	my_form.name='myForm';
+	my_form.method='POST';
+	my_form.action=Drupal.settings.basePath+'pivot';
+	var my_tb;
+	my_tb=document.createElement('INPUT');
+	my_tb.type='TEXT';
+	my_tb.name='head';
+	my_tb.value=json_head;
+	my_form.appendChild(my_tb);
+	
+	my_tb=document.createElement('INPUT');
+	my_tb.type='TEXT';
+	my_tb.name='body';
+	my_tb.value=json_body;
+	my_form.appendChild(my_tb);
+	document.body.appendChild(my_form);
+	my_form.submit();
+	//var json_head = JSON.stringify(thead);
+	//var json_body = JSON.stringify(tbody);
+	//window.location = Drupal.settings.basePath+'pivot?head='+json_head+'&body='+json_body;
 	//alert(arr[1]);
 }
 

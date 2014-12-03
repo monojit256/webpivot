@@ -3,33 +3,33 @@
 /**
  * Implements hook_menu().
  */
-function webpivot_menu() { 
-	$item['admin/config/webpivot'] = array(
-	'title' => 'Web Pivot',
-	'description' => 'Select Multiple Views for Data analysis',
-	'position' => 'right',
-	'weight' => -5,
-	'page callback' => 'system_admin_menu_block_page',
-	'access arguments' => array('administer site configuration'),
-	'file' => 'system.admin.inc',
-	'file path' => drupal_get_path('module', 'system'),
-	);
-	$item['admin/config/webpivot/settings'] = array(
-	'title' => 'Web Pivot Settings',
-	'description' => 'Select Views for Using Pivot Table Functionlity',
-	'page callback' => 'drupal_get_form',
-	'page arguments' => array('web_pivot_admin_settings'),
-	'access arguments' => array('administer site configuration'),
-	'type' => MENU_NORMAL_ITEM,
-	'file' => 'webpivot.admin.inc',
-	);
-	$item['webpivot/show_pivot'] = array(
-	'page callback' => 'pivothandler',
-	'page arguments' => array('pivot_table'),
-	'access callback' => TRUE,
-	'type' => MENU_CALLBACK
-	 );
-	return $item;
+function webpivot_menu() {
+  $item['admin/config/webpivot'] = array(
+    'title' => 'Web Pivot',
+    'description' => 'Select Multiple Views for Data analysis',
+    'position' => 'right',
+    'weight' => -5,
+    'page callback' => 'system_admin_menu_block_page',
+    'access arguments' => array('administer site configuration'),
+    'file' => 'system.admin.inc',
+    'file path' => drupal_get_path('module', 'system'),
+  );
+  $item['admin/config/webpivot/settings'] = array(
+    'title' => 'Web Pivot Settings',
+    'description' => 'Select Views for Using Pivot Table Functionlity',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('web_pivot_admin_settings'),
+    'access arguments' => array('administer site configuration'),
+    'type' => MENU_NORMAL_ITEM,
+    'file' => 'webpivot.admin.inc',
+  );
+  $item['webpivot/show_pivot'] = array(
+    'page callback' => 'pivothandler',
+    'page arguments' => array('pivot_table'),
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
+  );
+  return $item;
 }
 
 /**
@@ -37,56 +37,56 @@ function webpivot_menu() {
  */
 function webpivot_page_alter(&$page) {
   $url = current_path();
-  //drupal_set_message($url); 
+  //drupal_set_message($url);
   //dpm($page);
 }
 
 /**
  * Implements hook_form_alter().
  */
-function webpivot_form_alter(&$form, &$form_state, $form_id) { 
+function webpivot_form_alter(&$form, &$form_state, $form_id) {
   $url = current_path();
   $views_name_unserialize = variable_get('webpivot_serialzed');
   //dpm($views_name_unserialize);
   foreach ($views_name_unserialize as $key => $value) {
-  	$check = variable_get('webpivot_'.$value['machine_name']);
-	$conver_url = str_replace("_","-",$value['machine_name']); 
-	if($url == $conver_url) {
-		if($check == 1) {
-	  		dpm($conver_url);
-			drupal_set_message(drupal_get_path('module','webpivot'));
-			drupal_add_js(drupal_get_path('module','webpivot').'/webpivot.js');
-			//drupal_add_js('ajax.googleapis.com/ajax/libs/jquerymobile/1.4.3/jquery.mobile.min.js');
-			$form['#suffix'] = "<input type='button' value='test' onclick='get_value_from_table()' />";
-		}
-	 }
-		//dpm($value['machine_name']);
+    $check = variable_get('webpivot_' . $value['machine_name']);
+    $conver_url = str_replace("_", "-", $value['machine_name']);
+    if ($url == $conver_url) {
+      if ($check == 1) {
+        dpm($conver_url);
+        drupal_set_message(drupal_get_path('module', 'webpivot'));
+        drupal_add_js(drupal_get_path('module', 'webpivot') . '/webpivot.js');
+        //drupal_add_js('ajax.googleapis.com/ajax/libs/jquerymobile/1.4.3/jquery.mobile.min.js');
+        $form['#suffix'] = "<input type='button' value='test' onclick='get_value_from_table()' />";
+      }
+    }
+    //dpm($value['machine_name']);
   }
-  $_SESSION['site_path'] = drupal_get_path('module','webpivot');
+  $_SESSION['site_path'] = drupal_get_path('module', 'webpivot');
 }
 
 /**
  * Page Call back Function for webpivot/show_pivot page
  */
 function pivothandler() {
-	$head = $_GET['head'];
-	$body = $_GET['body'];
-	$decode_head = json_decode($head);
-	$decode_body = json_decode($body);
-	//echo $body;
-	echo "<input type='hidden' id='hidden_head' value='$head' /><input type='hidden' id='hidden_body' value='$body' />";
-//	echo "<body class='claro'>";
-//	echo "<div id='wpt-container'></div>";
-//	echo "</body>";	
-//	drupal_add_css(drupal_get_path('module','webpivot').'/brightsea/wpt/wpt.css');
-//	drupal_add_js(drupal_get_path('module','webpivot').'/brightsea/wpt/wpt.js');
-//	drupal_add_js(drupal_get_path('module','webpivot').'/highcharts/4.0.1/highcharts-all.js');
-//	drupal_add_js(drupal_get_path('module','webpivot').'/highcharts/group_categories/grouped-categories.js');
-	//drupal_add_js(drupal_get_path('module','webpivot').'/pivottable.js');
-	//drupal_set_message(drupal_get_path('module','webpivot'));
-	//drupal_set_message('Hello');
-//	$path = "http://localhost/dis2/sites/all/modules/custom/webpivot/brightsea/dojo/";
-	/*echo '    <link rel="stylesheet" href="http://localhost/dis2/sites/all/modules/custom/webpivot/brightsea/wpt/wpt.css">
+  $head = $_GET['head'];
+  $body = $_GET['body'];
+  $decode_head = json_decode($head);
+  $decode_body = json_decode($body);
+  //echo $body;
+  echo "<input type='hidden' id='hidden_head' value='$head' /><input type='hidden' id='hidden_body' value='$body' />";
+  //	echo "<body class='claro'>";
+  //	echo "<div id='wpt-container'></div>";
+  //	echo "</body>";
+  //	drupal_add_css(drupal_get_path('module','webpivot').'/brightsea/wpt/wpt.css');
+  //	drupal_add_js(drupal_get_path('module','webpivot').'/brightsea/wpt/wpt.js');
+  //	drupal_add_js(drupal_get_path('module','webpivot').'/highcharts/4.0.1/highcharts-all.js');
+  //	drupal_add_js(drupal_get_path('module','webpivot').'/highcharts/group_categories/grouped-categories.js');
+  //drupal_add_js(drupal_get_path('module','webpivot').'/pivottable.js');
+  //drupal_set_message(drupal_get_path('module','webpivot'));
+  //drupal_set_message('Hello');
+  //	$path = "http://localhost/dis2/sites/all/modules/custom/webpivot/brightsea/dojo/";
+  /*echo '    <link rel="stylesheet" href="http://localhost/dis2/sites/all/modules/custom/webpivot/brightsea/wpt/wpt.css">
 
     <script type="text/javascript" src="http://localhost/dis2/sites/all/modules/custom/webpivot/brightsea/wpt/wpt.js" data-dojo-config="async:1, baseUrl:" ></script>
     <script type="text/javascript" src="http://localhost/dis2/sites/all/modules/custom/webpivot/jquery/jquery-1.11.0.min.js"></script>
@@ -94,13 +94,16 @@ function pivothandler() {
     <script type="text/javascript" src="http://localhost/dis2/sites/all/modules/custom/webpivot/highcharts/group_categories/grouped-categories.js"></script>
     <script type="text/javascript" src="http://localhost/dis2/sites/all/modules/custom/webpivot/pivottable.js"></script>
 	';*/
-	require 'http://localhost/dis2/sites/all/modules/custom/webpivot/test.php';
-/*	<link rel="stylesheet" href="http://localhost/dis2/sites/all/modules/custom/webpivot/brightsea/wpt/wpt.css">
+
+  require 'http://localhost/dis2/sites/all/modules/custom/webpivot/test.php';
+  /*	<link rel="stylesheet" href="http://localhost/dis2/sites/all/modules/custom/webpivot/brightsea/wpt/wpt.css">
     <script type="text/javascript" src="http://localhost/dis2/sites/all/modules/custom/webpivot/brightsea/wpt/wpt.js" data-dojo-config="async:1, baseUrl: 'http://localhost/dis2/sites/all/modules/custom/webpivot/brightsea/dojo/'" ></script>
     <script type="text/javascript" src="http://localhost/dis2/sites/all/modules/custom/webpivot/jquery/jquery-1.11.0.min.js"></script>
     <script type="text/javascript" src="http://localhost/dis2/sites/all/modules/custom/webpivot/highcharts/4.0.1/highcharts-all.js"></script>
     <script type="text/javascript" src="http://localhost/dis2/sites/all/modules/custom/webpivot/highcharts/group_categories/grouped-categories.js"></script>
     <script type="text/javascript" src="http://localhost/dis2/sites/all/modules/custom/webpivot/pivottable.js"></script>*/
-	
-	//echo $_SESSION['site_path'];
+
+
+  //echo $_SESSION['site_path'];
 }
+
