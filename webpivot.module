@@ -29,6 +29,12 @@ function webpivot_menu() {
     'access callback' => TRUE,
     'type' => MENU_CALLBACK,
   );
+  $item['pivot'] = array(
+    'page callback' => 'my_page_function',
+    'page arguments' => array('pivot_table'),
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
+  );
   return $item;
 }
 
@@ -106,4 +112,24 @@ function pivothandler() {
 
   //echo $_SESSION['site_path'];
 }
+
+function my_page_function(){
+  // Call theme() function, so that Drupal includes the custom-page.tpl.php template
+  return theme('my_custom_template');
+}
+   
+/*
+ * Implementation of hook_theme().
+ */
+function webpivot_theme(){
+  $path = drupal_get_path('module','webpivot');
+  return array(
+    'my_custom_template' => array(
+      // template file name will be custom-page.tpl.php
+      'template' => 'pivot-page',
+      'path' => "$path",
+    ),
+  );
+}
+
 
