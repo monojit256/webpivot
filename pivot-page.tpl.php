@@ -27,7 +27,11 @@ table th {
 	border-spacing: 0;
 	border-collapse: collapse;
 }
-
+table {
+	margin: 0;
+	border-spacing: none;
+	border-color: none;
+}
 </style>
 <?php
 	drupal_add_css(drupal_get_path('theme','dis_theme').'/css/wpt.css');
