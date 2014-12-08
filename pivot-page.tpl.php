@@ -1,5 +1,9 @@
 <style type="text/css">
 html, #content {width:100%;height:100%; }
+#wpt-container{
+	width: 920px;
+	height: 920px;
+}
 body
 {
 	color: #000000;
@@ -41,7 +45,7 @@ table th {
    	 head = JSON.parse(document.getElementById("hidden_head").value);
   	 body = JSON.parse(document.getElementById("hidden_body").value);
           require(["wpt/WebPivotTable"], function(WebPivotTtbody,able){
-           new WebPivotTable({},"content").setCsvData(head,body);
+           new WebPivotTable({},"wpt-container").setCsvData(head,body);
        });
 });
 

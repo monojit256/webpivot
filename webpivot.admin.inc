@@ -12,7 +12,7 @@ function web_pivot_admin_settings() {
       );
       $i++;
     }
-    global $views_name;
+    //global $views_name;
     //$views_name_serialzed = serialize($views_name);
 
     //dpm(unserialize($test));
@@ -35,7 +35,8 @@ function web_pivot_admin_settings() {
 }
 
 function web_pivot_admin_settings_submit($form, &$form_state) {
-  //global $views_name;
+  global $views_name;
+  dpm($views_name);
   foreach ($views_name as $key => $value) {
     variable_set('webpivot_' . $value['machine_name'], $form[$value['machine_name']]['#checked']);
   }
