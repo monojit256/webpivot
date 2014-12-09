@@ -32,31 +32,6 @@ function webpivot_menu() {
   return $item;
 }
 
-
-/**
- * Implements hook_form_alter().
- */
-function webpivot_form_alter(&$form, &$form_state, $form_id) {
-  $url = current_path();
-  $views_name_unserialize = variable_get('webpivot_serialzed');
-  //dpm($views_name_unserialize);
-  foreach ($views_name_unserialize as $key => $value) {
-    $check = variable_get('webpivot_' . $value['machine_name']);
-    $conver_url = str_replace("_", "-", $value['machine_name']);
-    if ($url == $conver_url) {
-      if ($check == 1) {
-        dpm($conver_url);
-        drupal_set_message(drupal_get_path('module', 'webpivot'));
-        drupal_add_js(drupal_get_path('module', 'webpivot') . '/webpivot.js');
-        //drupal_add_js('ajax.googleapis.com/ajax/libs/jquerymobile/1.4.3/jquery.mobile.min.js');
-        $form['#suffix'] = "<input type='button' value='test' onclick='get_value_from_table()' />";
-      }
-    }
-    //dpm($value['machine_name']);
-  }
-  $_SESSION['site_path'] = drupal_get_path('module', 'webpivot');
-}
-
 /**
  * Menu call back function 
  */
@@ -77,6 +52,28 @@ function webpivot_theme(){
       'path' => "$path",
     ),
   );
+}
+
+/*
+ * Implementation of hook_page_build().
+ */
+function webpivot_page_build(&$page) {
+  $url = current_path();
+  $views_name_unserialize = variable_get('webpivot_serialzed');
+  foreach ($views_name_unserialize as $key => $value) {
+    $check = variable_get('webpivot_' . $value['machine_name']);
+    $conver_url = str_replace("_", "-", $value['machine_name']);
+    if ($url == $conver_url) {
+      if ($check == 1) {
+		 drupal_add_js(drupal_get_path('module', 'webpivot') . '/webpivot.js');
+		 $image_path = drupal_get_path('module','webpivot')."/images/button.png";
+		 $page['content']['disclaimer'] = array(
+	      '#markup' => '<a href="#" onclick="get_value_from_table()"><img src='.$image_path.' /></a>',
+	      '#weight' => 25,
+	    );
+	  }
+	}
+  }
 }
 
 

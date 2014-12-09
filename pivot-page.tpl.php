@@ -34,7 +34,7 @@ table {
 }
 </style>
 <?php
-	drupal_add_css(drupal_get_path('theme','dis_theme').'/css/wpt.css');
+	drupal_add_css(drupal_get_path('module','webpivot').'/brightsea/wpt/wpt.css');
 	$path = drupal_get_path('module','webpivot'); 
 ?>
 	<script type="text/javascript" src="<?php echo $path; ?>/jquery/jquery-1.11.0.min.js"></script>
